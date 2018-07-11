@@ -1,0 +1,442 @@
+people
+
+
+
+package com.example.sit.notification;
+
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.ListView;
+
+import com.example.sit.notification.model.ir;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class people extends AppCompatActivity {
+
+    FirebaseDatabase db;
+    DatabaseReference dbRef;
+    ListView listView;
+    List<ir> CountsList;
+    ir Count;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_people);
+        Intent intent=getIntent();
+        listView=findViewById(R.id.listcount);
+
+        db=FirebaseDatabase.getInstance();
+        dbRef=db.getReference("ir");
+        CountsList=new ArrayList<>();
+    }
+
+    @Override
+    protected void onStart(){
+        super.onStart();
+
+       dbRef.addValueEventListener(new ValueEventListener() {
+           @Override
+           public void onDataChange(DataSnapshot dataSnapshot) {
+               for (DataSnapshot ds:dataSnapshot.getChildren())
+               {
+                   Count=ds.getValue(ir.class);
+                   CountsList.add(Count);
+                   Log.d("This is the count value",Count.getCount());
+               }
+               CountList adapter=new CountList(people.this,CountsList);
+               listView.setAdapter(adapter);
+           }
+
+           @Override
+           public void onCancelled(DatabaseError databaseError) {
+
+           }
+       });
+    }
+}
+
+==============================================================================================================
+intruder
+
+package com.example.sit.notification;
+
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.widget.ListView;
+
+import com.example.sit.notification.model.pir;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class intruder extends AppCompatActivity {
+    FirebaseDatabase db;
+    DatabaseReference dbRef;
+    List<pir> usersList;
+    ListView listView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_intruder);
+        listView = findViewById(R.id.listmove);
+        Intent intent = getIntent();
+
+        db = FirebaseDatabase.getInstance();
+        dbRef = db.getReference("pir");
+        usersList = new ArrayList<>();
+    }
+    protected void onStart(){
+        super.onStart();
+
+        dbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (DataSnapshot ds : dataSnapshot.getChildren())
+                {
+                    pir users  = ds.getValue(pir.class);
+                    usersList.add(users);
+                }
+                UserList adapter=new UserList(intruder.this,usersList);
+                listView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+                //Toast.makeText(intruder.this, databaseError.toString(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+    }
+}
+==============================================================================================================================================================
+count list
+
+
+
+package com.example.sit.notification;
+
+import android.app.Activity;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
+
+import com.example.sit.notification.model.ir;
+
+import java.util.List;
+
+/**
+ * Created by NAVYA on 09-07-2018.
+ */
+ public class CountList extends ArrayAdapter {
+
+    private Activity context;
+    private List<ir> countList;
+
+    public CountList(@NonNull Activity context,List<ir> CountList) {
+        super(context, R.layout.counts,CountList);
+
+        this.context = context;
+        this.countList = CountList;
+    }
+
+    @NonNull
+    @Override
+    public View getView(int position,@Nullable View convertView,@NonNull ViewGroup parent){
+        LayoutInflater inflater=context.getLayoutInflater();
+        convertView=inflater.inflate(R.layout.counts,parent,false);
+
+        TextView I=convertView.findViewById(R.id.textcounts);
+        ir count= countList.get(position);
+        I.setText(count.getCount());
+
+        return convertView;
+    }
+
+}
+==============================================================================================================================
+dht  
+
+
+
+package com.example.sit.notification.model;
+
+/**
+ * Created by NAVYA on 09-07-2018.
+ */
+
+public class dht {
+    private String data;
+
+    public dht() {
+
+    }
+
+    public dht(String data) {
+        this.data = data;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData (String data) {
+        this.data = data;
+    }
+}
+==================================================================================================================================
+IR
+
+
+package com.example.sit.notification.model;
+
+/**
+ * Created by NAVYA on 09-07-2018.
+ */
+
+public class dht {
+    private String data;
+
+    public dht() {
+
+    }
+
+    public dht(String data) {
+        this.data = data;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData (String data) {
+        this.data = data;
+    }
+}
+====================================================================================================================================
+userlist
+
+
+package com.example.sit.notification;
+
+import android.app.Activity;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
+
+import com.example.sit.notification.model.pir;
+
+import java.util.List;
+
+/**
+ * Created by NAVYA on 07-07-2018.
+ */
+
+public class UserList extends ArrayAdapter<pir> {
+
+    Activity context;
+    List<pir> usersList;
+
+    public UserList(@NonNull Activity context, List<pir> usersList) {
+        super(context, R.layout.userlist,usersList);
+
+        this.context = context;
+        this.usersList = usersList;
+    }
+
+    @NonNull
+    @Override
+    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        LayoutInflater inflater = context.getLayoutInflater();
+        convertView = inflater.inflate(R.layout.userlist,parent,false);
+
+        TextView pir = convertView.findViewById(R.id.textViewUsers);
+
+        com.example.sit.notification.model.pir users = usersList.get(position);
+        pir.setText(users.getAlarm());
+
+        return convertView;
+    }
+}
+====================================================================================================================
+
+alert
+
+
+
+
+package com.example.sit.notification;
+
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.widget.ListView;
+
+import com.example.sit.notification.model.dht;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+
+public class alert extends AppCompatActivity {
+
+    FirebaseDatabase db;
+    DatabaseReference dbRef;
+    ArrayList<dht> FireList;
+    ListView listView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_alert);
+        listView = findViewById(R.id.listfire);
+        Intent intent = getIntent();
+
+        db = FirebaseDatabase.getInstance();
+        dbRef = db.getReference("dht");
+        FireList = new ArrayList<>();
+    }
+    @Override
+    protected void onStart(){
+        super.onStart();
+
+        dbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren())
+                {
+                    dht temp = ds.getValue(dht.class);
+                    FireList.add(temp);
+                }
+                FireList adapter = new FireList(alert.this,FireList);
+                listView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+}
+
+==============================================================================================================================
+
+notify
+
+package com.example.sit.notification;
+
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+
+public class notify extends AppCompatActivity {
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_notify);
+
+        Button smart, alarm, detection;
+        smart = findViewById(R.id.light);
+        alarm = findViewById(R.id.fire);
+        detection = findViewById(R.id.detect);
+
+        smart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(notify.this, people.class));
+            }
+        });
+
+        alarm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(notify.this, alert.class));
+            }
+        });
+
+        detection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(notify.this, intruder.class));
+            }
+        });
+
+    }
+}
+
+============================================================================================================================
+counts  
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+    android:id="@+id/textcounts"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="TextView"
+    android:textAllCaps="true"
+    android:textAlignment="center"
+    android:textStyle="bold"
+    android:textSize="20sp"
+    android:typeface="serif"/>
+
+</LinearLayout>
+================================================================================================================================
+activity people
+
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.sit.notification.people">
+
+
+    <ListView
+        android:id="@+id/listcount"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+</LinearLayout>
+===========================================================================================================================================
