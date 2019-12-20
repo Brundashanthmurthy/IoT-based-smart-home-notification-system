@@ -1,1 +1,3 @@
-# iot
+# Smart homenotification system
+The devices produced enable the user to control the appliances using pre-existing devices such as their Smartphone or home computer. The interfaces are intuitive and easy to use and provide the user with a more accessible interface then those found in the home. The devices are also very easy to integrate into existing applications and require only a small amount of expertise to install.  
+The technology used could be implemented in a wide variety of applications that require the use of sensors and appliances.  This project successfully designed a system that communicates with a mobile device such as a Smartphone or laptop via Raspberry Pi to control a door sensors and a light switches and a camera to stream live video, but has many possible applications that could benefit from this work.
